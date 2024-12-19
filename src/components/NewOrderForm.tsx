@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Order, OrderItem } from "@/lib/types";
+import { Order, OrderItem, OrderType } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 
 interface NewOrderFormProps {
@@ -22,7 +22,7 @@ interface NewOrderFormProps {
 const NewOrderForm = ({ open, onClose, onSubmit }: NewOrderFormProps) => {
   const { toast } = useToast();
   const [customerName, setCustomerName] = useState("");
-  const [orderType, setOrderType] = useState<Order["orderType"]>("online");
+  const [orderType, setOrderType] = useState<OrderType>("online");
   const [items, setItems] = useState<OrderItem[]>([
     { id: "1", name: "", quantity: 1, price: 0 },
   ]);
@@ -92,7 +92,7 @@ const NewOrderForm = ({ open, onClose, onSubmit }: NewOrderFormProps) => {
           
           <div className="space-y-2">
             <Label>Order Type</Label>
-            <Select value={orderType} onValueChange={setOrderType}>
+            <Select value={orderType} onValueChange={(value: OrderType) => setOrderType(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select order type" />
               </SelectTrigger>
