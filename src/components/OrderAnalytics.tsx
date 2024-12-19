@@ -1,4 +1,4 @@
-import { Order, OrderAnalytics } from "@/lib/types";
+import { type Order, type OrderAnalytics as OrderAnalyticsType } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -7,8 +7,8 @@ interface OrderAnalyticsProps {
 }
 
 const OrderAnalytics = ({ orders }: OrderAnalyticsProps) => {
-  const calculateAnalytics = (orders: Order[]): OrderAnalytics => {
-    const analytics: OrderAnalytics = {
+  const calculateAnalytics = (orders: Order[]): OrderAnalyticsType => {
+    const analytics: OrderAnalyticsType = {
       totalOrders: orders.length,
       averageOrderValue: 0,
       popularItems: [],
