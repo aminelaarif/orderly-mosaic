@@ -10,22 +10,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Order } from "@/lib/types";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortOrder, setSortOrder] = useState("none");
+  const [orders, setOrders] = useState<Order[]>(mockOrders);
 
-  const filteredOrders = mockOrders.filter((order) =>
-    order.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    order.id.toLowerCase().includes(searchQuery.toLowerCase())
+  const handleStatusChange = (orderId: string, newStatus: Order['status']) => {
+    setOrders(prevOrders => 
+      prevOrders.map(order => 
+        order.id === orderId 
+          ? { ...order, status: newStatus, updatedAt: new Date().toISOString() }
+          : order
+      )
+    );
+  };
+
+  const filteredOrders = orders.filter((order) =>
+    (order.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    order.id.toLowerCase().includes(searchQuery.toLowerCase())) &&
+    (statusFilter === "all" || order.status === statusFilter)
   );
 
   const activeOrders = filteredOrders.filter(
-    (order) => !order.status.includes("completed")
+    (order) => !['completed', 'cancelled'].includes(order.status)
   );
+  
   const completedOrders = filteredOrders.filter(
-    (order) => order.status.includes("completed")
+    (order) => ['completed', 'cancelled'].includes(order.status)
   );
 
   return (
@@ -45,8 +59,11 @@ const Index = () => {
             <SelectContent>
               <SelectItem value="all">All Status</SelectItem>
               <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="in_progress">In Progress</SelectItem>
               <SelectItem value="preparing">Preparing</SelectItem>
               <SelectItem value="ready">Ready</SelectItem>
+              <SelectItem value="completed">Completed</SelectItem>
+              <SelectItem value="cancelled">Cancelled</SelectItem>
             </SelectContent>
           </Select>
 
@@ -68,7 +85,11 @@ const Index = () => {
           <h2 className="text-2xl font-semibold mb-4">Active Orders</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {activeOrders.map((order) => (
-              <OrderCard key={order.id} order={order} />
+              <OrderCard 
+                key={order.id} 
+                order={order}
+                onStatusChange={handleStatusChange}
+              />
             ))}
           </div>
         </section>
@@ -77,7 +98,11 @@ const Index = () => {
           <h2 className="text-2xl font-semibold mb-4">Completed Orders</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {completedOrders.map((order) => (
-              <OrderCard key={order.id} order={order} />
+              <OrderCard 
+                key={order.id} 
+                order={order}
+                onStatusChange={handleStatusChange}
+              />
             ))}
           </div>
         </section>

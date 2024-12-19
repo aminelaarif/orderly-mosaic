@@ -19,4 +19,8 @@ export interface Order {
   total: number;
   createdAt: string;
   updatedAt: string;
+  estimatedReadyTime?: string;
+  customerEmail?: string;
+  customerPhone?: string;
+  notes?: string;
 }
