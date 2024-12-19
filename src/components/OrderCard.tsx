@@ -3,9 +3,15 @@ import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { Button } from "./ui/button";
 import { Clock, Phone, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface OrderCardProps {
   order: Order;
@@ -18,10 +24,6 @@ const getStatusColor = (status: string) => {
       return "bg-pink-100 text-pink-800";
     case "preparing":
       return "bg-amber-100 text-amber-800";
-    case "ready":
-      return "bg-emerald-100 text-emerald-800";
-    case "in_progress":
-      return "bg-blue-100 text-blue-800";
     case "completed":
       return "bg-green-100 text-green-800";
     case "cancelled":
@@ -59,17 +61,6 @@ const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
     }
   };
 
-  const getNextStatus = (currentStatus: Order['status']): Order['status'] | null => {
-    const statusFlow = {
-      pending: 'in_progress',
-      in_progress: 'preparing',
-      preparing: 'ready',
-      ready: 'completed'
-    } as const;
-
-    return statusFlow[currentStatus as keyof typeof statusFlow] || null;
-  };
-
   return (
     <Card className="w-full">
       <CardHeader className="flex-row justify-between items-center pb-2">
@@ -84,12 +75,17 @@ const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
             ).join(" ")}
           </Badge>
         </div>
-        <Badge 
-          variant="secondary"
-          className={cn(getStatusColor(order.status))}
-        >
-          {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-        </Badge>
+        <Select value={order.status} onValueChange={handleStatusChange}>
+          <SelectTrigger className={cn("w-[130px]", getStatusColor(order.status))}>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="preparing">Preparing</SelectItem>
+            <SelectItem value="completed">Completed</SelectItem>
+            <SelectItem value="cancelled">Cancelled</SelectItem>
+          </SelectContent>
+        </Select>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -129,26 +125,6 @@ const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
             <span className="font-medium">Total:</span>
             <span className="font-semibold">${order.total.toFixed(2)}</span>
           </div>
-
-          {order.status !== 'completed' && order.status !== 'cancelled' && (
-            <div className="flex gap-2 pt-2">
-              {getNextStatus(order.status) && (
-                <Button 
-                  className="w-full"
-                  onClick={() => handleStatusChange(getNextStatus(order.status)!)}
-                >
-                  Mark as {getNextStatus(order.status)}
-                </Button>
-              )}
-              <Button 
-                variant="destructive"
-                className="w-full"
-                onClick={() => handleStatusChange('cancelled')}
-              >
-                Cancel Order
-              </Button>
-            </div>
-          )}
         </div>
       </CardContent>
     </Card>

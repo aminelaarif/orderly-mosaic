@@ -2,6 +2,7 @@ import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import OrderCard from "@/components/OrderCard";
 import OrderAnalytics from "@/components/OrderAnalytics";
+import NewOrderForm from "@/components/NewOrderForm";
 import { mockOrders } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +19,7 @@ const Index = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [priceSort, setPriceSort] = useState("none");
   const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const [isNewOrderOpen, setIsNewOrderOpen] = useState(false);
 
   const handleStatusChange = (orderId: string, newStatus: Order['status']) => {
     setOrders(prevOrders => 
@@ -27,6 +29,16 @@ const Index = () => {
           : order
       )
     );
+  };
+
+  const handleNewOrder = (orderData: Omit<Order, "id" | "createdAt" | "updatedAt">) => {
+    const newOrder: Order = {
+      ...orderData,
+      id: (orders.length + 1).toString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    setOrders([newOrder, ...orders]);
   };
 
   const filteredOrders = orders
@@ -54,8 +66,19 @@ const Index = () => {
     <div className="container mx-auto py-8 px-4 max-w-7xl">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Order Management</h1>
-        <Button className="bg-orange-500 hover:bg-orange-600">New Order</Button>
+        <Button 
+          className="bg-orange-500 hover:bg-orange-600"
+          onClick={() => setIsNewOrderOpen(true)}
+        >
+          New Order
+        </Button>
       </div>
+
+      <NewOrderForm 
+        open={isNewOrderOpen}
+        onClose={() => setIsNewOrderOpen(false)}
+        onSubmit={handleNewOrder}
+      />
 
       <OrderAnalytics orders={orders} />
 
@@ -69,9 +92,7 @@ const Index = () => {
             <SelectContent>
               <SelectItem value="all">All Status</SelectItem>
               <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="in_progress">In Progress</SelectItem>
               <SelectItem value="preparing">Preparing</SelectItem>
-              <SelectItem value="ready">Ready</SelectItem>
               <SelectItem value="completed">Completed</SelectItem>
               <SelectItem value="cancelled">Cancelled</SelectItem>
             </SelectContent>
