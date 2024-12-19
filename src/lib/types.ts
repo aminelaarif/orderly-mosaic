@@ -1,4 +1,4 @@
-export type OrderStatus = 'completed' | 'in_progress' | 'cancelled';
+export type OrderStatus = 'pending' | 'preparing' | 'ready' | 'completed' | 'cancelled';
 
 export type OrderType = 'dine_in' | 'takeout' | 'delivery' | 'online';
 

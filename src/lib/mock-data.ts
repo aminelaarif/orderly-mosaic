@@ -2,61 +2,78 @@ import { Order } from './types';
 
 export const mockOrders: Order[] = [
   {
-    id: "ord_1",
+    id: "ORD001",
     customerName: "John Smith",
     orderType: "dine_in",
-    status: "completed",
+    status: "pending",
     items: [
       {
         id: "item_1",
         name: "Margherita Pizza",
-        quantity: 2,
+        quantity: 1,
         price: 15.99,
-        specialRequests: "Extra cheese"
       },
       {
         id: "item_2",
         name: "Caesar Salad",
         quantity: 1,
-        price: 8.99
+        price: 8.99,
       }
     ],
-    total: 40.97,
-    createdAt: "2024-04-10T14:30:00Z",
-    updatedAt: "2024-04-10T15:00:00Z"
+    total: 32.50,
+    createdAt: "2024-02-14T14:30:00Z",
+    updatedAt: "2024-02-14T14:30:00Z"
   },
   {
-    id: "ord_2",
-    customerName: "Sarah Johnson",
-    orderType: "delivery",
-    status: "in_progress",
+    id: "ORD002",
+    customerName: "Emma Wilson",
+    orderType: "takeout",
+    status: "preparing",
     items: [
       {
         id: "item_3",
-        name: "Chicken Wings",
-        quantity: 2,
-        price: 12.99
-      }
-    ],
-    total: 25.98,
-    createdAt: "2024-04-10T14:45:00Z",
-    updatedAt: "2024-04-10T14:45:00Z"
-  },
-  {
-    id: "ord_3",
-    customerName: "Mike Wilson",
-    orderType: "takeout",
-    status: "cancelled",
-    items: [
+        name: "Pasta Carbonara",
+        quantity: 1,
+        price: 16.99,
+      },
       {
         id: "item_4",
-        name: "Burger Combo",
+        name: "Tiramisu",
         quantity: 1,
-        price: 16.99
+        price: 11.76,
       }
     ],
-    total: 16.99,
-    createdAt: "2024-04-10T13:15:00Z",
-    updatedAt: "2024-04-10T13:30:00Z"
+    total: 28.75,
+    createdAt: "2024-02-14T14:25:00Z",
+    updatedAt: "2024-02-14T14:25:00Z"
+  },
+  {
+    id: "ORD003",
+    customerName: "Michael Brown",
+    orderType: "delivery",
+    status: "ready",
+    items: [
+      {
+        id: "item_5",
+        name: "Chicken Curry",
+        quantity: 1,
+        price: 18.99,
+      },
+      {
+        id: "item_6",
+        name: "Naan Bread",
+        quantity: 2,
+        price: 4.99,
+      },
+      {
+        id: "item_7",
+        name: "Mango Lassi",
+        quantity: 2,
+        price: 6.99,
+      }
+    ],
+    total: 42.00,
+    createdAt: "2024-02-14T14:20:00Z",
+    updatedAt: "2024-02-14T14:20:00Z"
   }
 ];
