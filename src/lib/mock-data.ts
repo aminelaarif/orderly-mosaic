@@ -20,9 +20,14 @@ export const mockOrders: Order[] = [
         price: 8.99,
       }
     ],
-    total: 32.50,
+    total: 24.98,
     createdAt: "2024-02-14T14:30:00Z",
-    updatedAt: "2024-02-14T14:30:00Z"
+    updatedAt: "2024-02-14T14:30:00Z",
+    customerEmail: "john@example.com",
+    review: {
+      rating: 4,
+      comment: "Great food!"
+    }
   },
   {
     id: "ORD002",
@@ -33,25 +38,26 @@ export const mockOrders: Order[] = [
       {
         id: "item_3",
         name: "Pasta Carbonara",
-        quantity: 1,
+        quantity: 2,
         price: 16.99,
       },
       {
         id: "item_4",
         name: "Tiramisu",
         quantity: 1,
-        price: 11.76,
+        price: 7.99,
       }
     ],
-    total: 28.75,
+    total: 41.97,
     createdAt: "2024-02-14T14:25:00Z",
-    updatedAt: "2024-02-14T14:25:00Z"
+    updatedAt: "2024-02-14T14:25:00Z",
+    customerPhone: "555-0123"
   },
   {
     id: "ORD003",
     customerName: "Michael Brown",
     orderType: "delivery",
-    status: "ready",
+    status: "completed",
     items: [
       {
         id: "item_5",
@@ -63,17 +69,41 @@ export const mockOrders: Order[] = [
         id: "item_6",
         name: "Naan Bread",
         quantity: 2,
-        price: 4.99,
-      },
-      {
-        id: "item_7",
-        name: "Mango Lassi",
-        quantity: 2,
-        price: 6.99,
+        price: 3.99,
       }
     ],
-    total: 42.00,
+    total: 26.97,
     createdAt: "2024-02-14T14:20:00Z",
-    updatedAt: "2024-02-14T14:20:00Z"
+    updatedAt: "2024-02-14T14:20:00Z",
+    customerEmail: "michael@example.com",
+    customerPhone: "555-0124",
+    review: {
+      rating: 5,
+      comment: "Excellent service and food!"
+    }
+  },
+  {
+    id: "ORD004",
+    customerName: "Sarah Johnson",
+    orderType: "online",
+    status: "in_progress",
+    items: [
+      {
+        id: "item_7",
+        name: "Margherita Pizza",
+        quantity: 2,
+        price: 15.99,
+      },
+      {
+        id: "item_8",
+        name: "Garlic Bread",
+        quantity: 1,
+        price: 4.99,
+      }
+    ],
+    total: 36.97,
+    createdAt: "2024-02-14T14:15:00Z",
+    updatedAt: "2024-02-14T14:15:00Z",
+    customerEmail: "sarah@example.com"
   }
 ];

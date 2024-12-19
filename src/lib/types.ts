@@ -23,4 +23,16 @@ export interface Order {
   customerEmail?: string;
   customerPhone?: string;
   notes?: string;
+  review?: {
+    rating: number;
+    comment?: string;
+  };
+}
+
+export interface OrderAnalytics {
+  totalOrders: number;
+  averageOrderValue: number;
+  popularItems: { name: string; count: number }[];
+  ordersByStatus: Record<OrderStatus, number>;
+  ordersByType: Record<OrderType, number>;
 }

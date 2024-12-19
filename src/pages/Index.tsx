@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import OrderCard from "@/components/OrderCard";
+import OrderAnalytics from "@/components/OrderAnalytics";
 import { mockOrders } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +16,7 @@ import { Order } from "@/lib/types";
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [sortOrder, setSortOrder] = useState("none");
+  const [priceSort, setPriceSort] = useState("none");
   const [orders, setOrders] = useState<Order[]>(mockOrders);
 
   const handleStatusChange = (orderId: string, newStatus: Order['status']) => {
@@ -28,11 +29,18 @@ const Index = () => {
     );
   };
 
-  const filteredOrders = orders.filter((order) =>
-    (order.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    order.id.toLowerCase().includes(searchQuery.toLowerCase())) &&
-    (statusFilter === "all" || order.status === statusFilter)
-  );
+  const filteredOrders = orders
+    .filter((order) => {
+      const matchesSearch = order.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        order.id.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesStatus = statusFilter === "all" || order.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      if (priceSort === "highest") return b.total - a.total;
+      if (priceSort === "lowest") return a.total - b.total;
+      return 0;
+    });
 
   const activeOrders = filteredOrders.filter(
     (order) => !['completed', 'cancelled'].includes(order.status)
@@ -49,7 +57,9 @@ const Index = () => {
         <Button className="bg-orange-500 hover:bg-orange-600">New Order</Button>
       </div>
 
-      <div className="flex justify-between items-center gap-4 mb-8">
+      <OrderAnalytics orders={orders} />
+
+      <div className="flex justify-between items-center gap-4 my-8">
         <SearchBar onSearch={setSearchQuery} />
         <div className="flex gap-4">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -67,14 +77,14 @@ const Index = () => {
             </SelectContent>
           </Select>
 
-          <Select value={sortOrder} onValueChange={setSortOrder}>
+          <Select value={priceSort} onValueChange={setPriceSort}>
             <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="No sorting" />
+              <SelectValue placeholder="Sort by price" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">No sorting</SelectItem>
-              <SelectItem value="newest">Newest first</SelectItem>
-              <SelectItem value="oldest">Oldest first</SelectItem>
+              <SelectItem value="highest">Highest price</SelectItem>
+              <SelectItem value="lowest">Lowest price</SelectItem>
             </SelectContent>
           </Select>
         </div>
