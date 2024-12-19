@@ -1,3 +1,4 @@
+import React from 'react';
 import { Order, OrderStatus } from "@/lib/types";
 import { format } from "date-fns";
 import {
@@ -23,6 +24,14 @@ const getStatusColor = (status: OrderStatus) => {
       return "bg-amber-100 text-amber-800";
     case "cancelled":
       return "bg-red-100 text-red-800";
+    case "pending":
+      return "bg-blue-100 text-blue-800";
+    case "preparing":
+      return "bg-purple-100 text-purple-800";
+    case "ready":
+      return "bg-green-100 text-green-800";
+    default:
+      return "bg-gray-100 text-gray-800";
   }
 };
 
@@ -30,7 +39,7 @@ const formatOrderType = (type: string) => {
   return type.split("_").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 };
 
-const OrderTable = ({ orders, onOrderClick }: OrderTableProps) => {
+const OrderTable: React.FC<OrderTableProps> = ({ orders, onOrderClick }) => {
   return (
     <div className="rounded-md border">
       <Table>
